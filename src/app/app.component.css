@@ -1,0 +1,16 @@
+.mat-tab-nav-bar {
+  position:       fixed;
+  left:           0;
+  width:          100%;
+  z-index:        2;
+}
+
+.main-content {  
+  margin-top:     56px;
+  max-height:     calc(100vh - 56px);
+  min-height:     calc(100vh - 56px);
+  overflow-y:     auto;
+  margin-bottom:  56px;
+  overflow-x:     hidden;
+  max-width:      100wh;
+}

@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+//IMPORTS ---------------------------------------------
+  import { Component, OnInit }            from '@angular/core';
+  import { VideoService }                 from '../video.service';
+
+
+
 
 @Component({
   selector: 'app-video-featured',
@@ -6,10 +11,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./video-featured.component.scss']
 })
 export class VideoFeaturedComponent implements OnInit {
+//DECLARATIONS ----------------------------------------- 
 
-  constructor() { }
+
+
+
+//MAIN -------------------------------------------------
+  private start() {
+    this.service.query().subscribe(t => console.log(t));
+  }
+
+
+
+
+//OTHERS -----------------------------------------------
+  constructor(private service: VideoService) { }
 
   ngOnInit() {
+    this.start();
   }
 
 }
