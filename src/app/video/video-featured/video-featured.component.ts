@@ -12,13 +12,19 @@
 })
 export class VideoFeaturedComponent implements OnInit {
 //DECLARATIONS ----------------------------------------- 
-
-
+  public videoList: any;
+  public featuredVideo: any;
 
 
 //MAIN -------------------------------------------------
   private start() {
-    this.service.query().subscribe(t => console.log(t));
+    this.service.queryDetails().subscribe(v => {
+      v.subscribe(t => {
+        // console.log('t', t);
+        this.videoList = t.items;
+        this.featuredVideo = t.items[0];
+      });
+    });
   }
 
 

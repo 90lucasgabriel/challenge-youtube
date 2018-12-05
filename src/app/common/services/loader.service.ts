@@ -16,7 +16,7 @@ export class LoaderService {
   onStarted(req: HttpRequest<any>): void {
     this.requests.push(req);
     this.notify();
-    console.log('started');
+    // console.log('started');
   }
 
   /**
@@ -26,7 +26,7 @@ export class LoaderService {
     const index = this.requests.indexOf(req);
     this.requests.splice(index - 1, 1);
     this.notify();
-    console.log('onFinished');
+    // console.log('onFinished');
   }
 
   /**
@@ -34,6 +34,6 @@ export class LoaderService {
    */
   private notify(): void {
     this.onLoadingChanged.emit(this.requests.length !== 0);
-    console.log('notify');
+    // console.log('notify');
   }
 }

@@ -1,6 +1,7 @@
 // IMPORTS -----------------------------------------------------
   import { Injectable }                 from '@angular/core';
-  import { Observable }                 from 'rxjs';
+  import { Observable, combineLatest }  from 'rxjs';
+  import { map, switchMap }             from 'rxjs/operators';
   import { HttpClient }                 from '@angular/common/http';
 
   import { AppConfig }                  from '../app.config';
@@ -10,28 +11,44 @@
 @Injectable()
 export class VideoService {
 // DECLARATIONS --------------------------------------------------
-  private path:                         string = `https://www.googleapis.com/youtube/v3/videos?id=7lCDEYXw3mM&key=${AppConfig.YOUTUBE_API_KEY}&part=snippet,contentDetails,statistics,status`;
+  private youtubeApiKey:                string = AppConfig.YOUTUBE_API_KEY;
+  private channelId:                    string = 'UCKHhA5hN2UohhFDfNXB_cvQ';
+  private maxResults:                   number = 10;
   private entity:                       string = 'videos';
   private videoList:                    Observable<Video[]>;
+  private searchUrl:                    string = `https://www.googleapis.com/youtube/v3/search?key=${this.youtubeApiKey}&channelId=${this.channelId}&order=date&maxResults=${this.maxResults}&part=snippet`;
+  private videoUrl:                     string = `https://www.googleapis.com/youtube/v3/videos?key=${this.youtubeApiKey}&part=id,snippet,contentDetails,statistics&id=`;
 
 
 
 
 // METHODS -------------------------------------------------------
-  public query(): Observable<Array<Video>> {
-    return this.http.get(this.path);
+  /**
+   * GET Search List
+   */
+  public query(): Observable<any> {
+    return this.http.get(this.searchUrl);
   }
 
-  /*public get(id: string): Observable<Video> {
-    //return this.fs.docWithIds$(`${this.entity}/${id}`);
+  /**
+   * GET Videos List with videos Ids
+   */
+  public queryDetails(): Observable<any> {
+    let videosId;
+    return this.query().pipe(
+      map(v => {
+        videosId = v.items.map(item => item.id.videoId);
+        console.log(videosId);
+        return this.http.get(`${this.videoUrl}${videosId.join()}`);
+      })
+    );
   }
-  */
+
+
 
 
 
 // OTHERS ---------------------------------------------------------
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(private http: HttpClient) { }
 
 }

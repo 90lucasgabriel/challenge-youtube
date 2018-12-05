@@ -7,6 +7,9 @@
 
   import { VideoRoutingModule }       from './video-routing.module';
   import { VideoService }             from './video.service';
+  import { SanitizeHtmlPipe }         from '../common/pipes/sanitize-html.pipe';
+  import { YoutubeSafeUrlPipe }       from '../common/pipes/youtube-safe-url.pipe';
+
 
   import { VideoFeaturedComponent }   from './video-featured/video-featured.component';
   import { VideoListComponent }       from './video-list/video-list.component';
@@ -21,7 +24,10 @@
     ReactiveFormsModule,
     VideoRoutingModule
   ],
-  declarations: [VideoFeaturedComponent, VideoListComponent, VideoSearchComponent],
+  declarations: [
+    VideoFeaturedComponent, VideoListComponent, VideoSearchComponent,
+    SanitizeHtmlPipe, YoutubeSafeUrlPipe
+  ],
   providers:    [VideoService]
 })
 export class VideoModule { }
