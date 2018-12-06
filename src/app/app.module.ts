@@ -4,14 +4,13 @@
   import { NgModule }                   from '@angular/core';
   import { HttpClientModule, HTTP_INTERCEPTORS }  from '@angular/common/http';
 
-  import { AppConfig }                  from './app.config';
   import { AppRoutingModule }           from './app-routing.module';
   import { MaterialModule }             from './material/material.module';
   import { PipesModule }                from './common/pipes/pipes.module';
+  import { Globals }                    from './app.globals';
 
   import { LoaderService }              from './common/services/loader.service';
   import { LoaderInterceptor }          from './common/interceptors/loader.interceptor';
-  import { HeaderInterceptor }          from './common/interceptors/header.interceptor';
 
   import { VideoModule }                from './video/video.module';
 
@@ -31,7 +30,9 @@
 
     VideoModule
   ],
-  providers: [LoaderService,
+  providers: [
+    LoaderService,
+    Globals,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,

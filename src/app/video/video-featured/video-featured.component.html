@@ -1,8 +1,6 @@
-<!-- LAYOUT START -->
-<div fxLayout="row" fxLayoutAlign="center start" class="mat-typography" ngStyle.gt-md="margin-top: 25px"   ngStyle.lt-lg="margin-top: 250px">
-    <div fxLayout="column" fxFlex="80" fxFlex.lt-md="100" fxLayoutGap="25px">
+
       <!-- MAIN START -->        
-      <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="25px">
+      <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="25px" ngStyle.lt-lg="margin-top: 250px">
         
               
       <div fxLayout="column" fxFlex="100" fxLayoutGap="25px">
@@ -13,13 +11,13 @@
           <div fxFlex.gt-md="65">
             <div fxLayout="column" fxLayoutGap="25px" class="padding">
               
-              <h2>Vídeo em Destaque</h2>
+              <h2>Vídeo em Destaque de {{ featuredVideo?.snippet.channelTitle}}</h2>
               <mat-progress-spinner color="primary" mode="indeterminate" diameter="30" *ngIf="loadingFeatured" ></mat-progress-spinner>
 
               <div *ngIf="!loadingFeatured">
                 <!-- VIDEO START -->
                 <div>
-                  <iframe [src]="featuredVideo?.id | youtubeSafeUrl" frameborder="0" allowfullscreen ngStyle.gt-md="height: 500px; width:100%" ngStyle.lt-lg="height: 300px; width: 100%; position: fixed; top: 56px; left: 0; z-index: 10"></iframe>
+                  <iframe [src]="featuredVideo?.id | youtubeSafeUrl" frameborder="0" allowfullscreen ngStyle.gt-md="height: 370px; width:100%" ngStyle.lt-lg="height: 310px; width: 100%; position: fixed; top: 56px; left: 0; z-index: 10"></iframe>
                 </div> 
                 <!-- VIDEO END -->
 
@@ -93,6 +91,3 @@
       </div>
       <!-- PROJECT END -->
     
-    </div>
-  </div>
-  <!-- LAYOUT END -->

@@ -1,15 +1,15 @@
 // IMPORTS -----------------------------------------------------
+  // ANGULAR -------------------------
   import { Injectable }                 from '@angular/core';
+  import { HttpClient }                 from '@angular/common/http';
   import { Observable, combineLatest }  from 'rxjs';
   import { map, switchMap }             from 'rxjs/operators';
-  import { HttpClient }                 from '@angular/common/http';
 
-  import { AppConfig }                  from '../app.config';
+  // SERVICES ------------------------
   import { SearchParam }                from '../common/models/search-param.model';
   import { VideoParam }                 from '../common/models/video-param.model.';
   import { UtilService }                from '../common/services/util.service';
-
-  import { Video }                      from './video.model';
+import { ChannelParam } from '../common/models/channel-param.model';
 
 
 
@@ -19,6 +19,7 @@ export class VideoService {
 // DECLARATIONS --------------------------------------------------
   private searchUrl:                    string = `https://www.googleapis.com/youtube/v3/search?`;
   private videoUrl:                     string = `https://www.googleapis.com/youtube/v3/videos?`;
+  private channelUrl:                   string = `https://www.googleapis.com/youtube/v3/channels?`;
 
 
 
@@ -58,12 +59,11 @@ export class VideoService {
     );
   }
 
-  /**
-   * GET Search List
-   */
-  public loadMore(searchParam: SearchParam, videoParam: VideoParam): Observable<any> {
-    return this.query(searchParam);
+  public queryChannelDetails(channelParam: ChannelParam): Observable<any> {
+    const channelQueryString = this.util.ObjectToQuerystring(channelParam);
+    return this.http.get(`${this.channelUrl}&${channelQueryString}`);
   }
+
 
 
 
