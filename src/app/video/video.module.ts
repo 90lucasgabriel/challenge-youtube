@@ -5,12 +5,11 @@
   import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   import { MaterialModule }           from '../material/material.module';
 
+  import { PipesModule }              from '../common/pipes/pipes.module';
+  import { UtilService }              from '../common/services/util.service';
+    
   import { VideoRoutingModule }       from './video-routing.module';
   import { VideoService }             from './video.service';
-  import { SanitizeHtmlPipe }         from '../common/pipes/sanitize-html.pipe';
-  import { YoutubeSafeUrlPipe }       from '../common/pipes/youtube-safe-url.pipe';
-
-
   import { VideoFeaturedComponent }   from './video-featured/video-featured.component';
   import { VideoListComponent }       from './video-list/video-list.component';
   import { VideoSearchComponent }     from './video-search/video-search.component';
@@ -22,12 +21,12 @@
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    PipesModule,
     VideoRoutingModule
   ],
   declarations: [
-    VideoFeaturedComponent, VideoListComponent, VideoSearchComponent,
-    SanitizeHtmlPipe, YoutubeSafeUrlPipe
+    VideoFeaturedComponent, VideoListComponent, VideoSearchComponent
   ],
-  providers:    [VideoService]
+  providers:    [VideoService, UtilService]
 })
 export class VideoModule { }

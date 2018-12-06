@@ -1,5 +1,5 @@
 @import '~@angular/material/theming';
-$theme-primary: mat-palette($mat-teal);
+$theme-primary: mat-palette($mat-pink, 800);
 $theme-accent:  mat-palette($mat-amber);
 $theme-warn:    mat-palette($mat-red);
 $light-theme:   mat-light-theme($theme-primary, $theme-accent, $theme-warn);

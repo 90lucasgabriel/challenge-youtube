@@ -7,6 +7,7 @@
   import { AppConfig }                  from './app.config';
   import { AppRoutingModule }           from './app-routing.module';
   import { MaterialModule }             from './material/material.module';
+  import { PipesModule }                from './common/pipes/pipes.module';
 
   import { LoaderService }              from './common/services/loader.service';
   import { LoaderInterceptor }          from './common/interceptors/loader.interceptor';
@@ -25,6 +26,7 @@
     HttpClientModule,
 
     AppRoutingModule,
+    PipesModule,
     MaterialModule,
 
     VideoModule

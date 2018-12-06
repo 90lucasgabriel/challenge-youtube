@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+//IMPORTS ---------------------------------------------
+  import { Component, OnInit }            from '@angular/core';
+  import { MatDialog, MatDialogConfig }   from "@angular/material";
+  import { VideoService }                 from '../video.service';
+
+  import { AppConfig }                    from '../../app.config';
+  import { SearchParam }                  from 'src/app/common/models/search-param.model';
+  import { VideoParam }                   from 'src/app/common/models/video-param.model.';
+
+  import { DialogContentComponent } from '../../material/dialog/dialog-content.component';
+
+
 
 @Component({
   selector: 'app-video-list',
@@ -6,10 +17,96 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./video-list.component.scss']
 })
 export class VideoListComponent implements OnInit {
+//DECLARATIONS ----------------------------------------- 
+  public videoList:       any = null;
+  public featuredVideo:   any = null;
+  private nextPageToken:  string;
+  public searchParam:     SearchParam;
+  public videoParam:      VideoParam;
 
-  constructor() { }
+  public loadingFeatured: boolean = true;
+  public loadingMore:     boolean = true;
 
-  ngOnInit() {
+
+
+
+  //MAIN -------------------------------------------------
+  private start() {
+    this.startProperties();
+    this.queryDetails(this.searchParam, this.videoParam);
   }
 
+  private queryDetails(searchParam: SearchParam, videoParam: VideoParam): void {
+    this.service.queryDetails(this.searchParam, this.videoParam).subscribe(search => {
+      search.subscribe(videos => {
+        this.videoList            = videos.items;
+        this.nextPageToken        = videos.search.nextPageToken;
+        this.featuredVideo        = videos.items[0];
+
+        this.loadingFeatured      = false;
+        this.loadingMore          = false;
+      });
+    });
+  }
+
+  public loadMore(): void {
+    this.loadingMore              = true;
+    const loadParam: SearchParam  = JSON.parse(JSON.stringify(this.searchParam));
+    loadParam.pageToken           = this.nextPageToken;
+
+    this.service.queryDetails(loadParam, this.videoParam).subscribe(search => {
+      search.subscribe(videos => {
+        console.log(videos);
+        this.videoList            = this.videoList.concat(videos.items);
+        this.nextPageToken        = videos.search.nextPageToken;
+        this.loadingMore          = false;
+      });
+    });
+  }
+
+  public selectFeatured(video: any): void {
+    this.featuredVideo            = video;
+  }
+
+  private startProperties(): void {
+    this.searchParam = {
+      key:            AppConfig.YOUTUBE_API_KEY,
+      channelId:      AppConfig.CHANNEL_ID,
+      maxResults:     9,
+      order:          'date',
+      part:           'snippet',
+      type:           'video',
+    };
+
+    this.videoParam = {
+      key:            this.searchParam.key,
+      channelId:      this.searchParam.channelId,
+      maxResults:     this.searchParam.maxResults,
+      part:           'id,snippet,contentDetails,recordingDetails,statistics',
+    };
+  }
+
+
+
+  //OTHERS -----------------------------------------------
+  constructor(
+    private dialog:     MatDialog,
+    private service:    VideoService) { }
+
+  ngOnInit() {
+    this.start();
+  }
+
+  public openDialog(video: any) {
+
+    let dialogConfig = new MatDialogConfig();
+
+    dialogConfig = {
+      width: '650px',
+      height: '550px',
+      data: video
+    };
+
+    this.dialog.open(DialogContentComponent, dialogConfig);
+  }
 }

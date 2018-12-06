@@ -1,3 +1,44 @@
-<p>
-  video-list works!
-</p>
+<!-- LAYOUT START -->
+<div fxLayout="row" fxLayoutAlign="center start" class="mat-typography" ngStyle.gt-md="margin-top: 25px">
+    <div fxLayout="column" fxFlex="80" fxFlex.lt-md="100">
+      <!-- MAIN START -->  
+      
+      <div class="padding">
+        <p class="p-h1">Todos os vídeos do canal</p>
+      </div>
+
+      <div fxLayout="column" fxFlex="100" fxLayoutAlign="center center" fxLayoutGap="25px">
+        
+        <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="10px">          
+          <div fxFlex="30" fxLayoutGap="10px" fxFlex.lt-lg="45" fxFlex.lt-md="100" *ngFor="let video of videoList"  (click)="openDialog(video)" class="padding">
+            
+            <!-- COMPONENT VIDEOS -->
+            <div fxFlex="50">
+              <img [src]="video.snippet.thumbnails.medium.url" class="full-width" />
+            </div>
+            <div fxFlex="50" fxLayoutGap="5px">
+              <div fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="5px">
+                <div ngClass.lt-md="p-h2" ngClass.gt-sm="p-h3">{{video.snippet.title | slice:0:45}}</div>
+                <div fxLayoutAlign="start center">
+                  <mat-icon>remove_red_eye</mat-icon>  
+                  {{video.statistics.viewCount}} views
+                </div>
+              </div>                      
+            </div> 
+          </div>
+
+        </div>
+
+        <mat-progress-spinner color="primary" mode="indeterminate" diameter="30" *ngIf="loadingMore" ></mat-progress-spinner>
+        <button mat-stroked-button color="primary" (click)="loadMore()" *ngIf="!loadingMore"  >Carregar mais...</button>
+
+
+        <div></div>
+  
+      </div>
+      <!-- RIGHT COLUMN END -->
+                       
+    
+    </div>
+  </div>
+  <!-- LAYOUT END -->

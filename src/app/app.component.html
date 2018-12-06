@@ -12,6 +12,12 @@ color="accent" mode="indeterminate"></mat-progress-bar>
         <button mat-icon-button matTooltip="Pesquisar">
           <mat-icon>search</mat-icon>
         </button>
+      
+        <button mat-icon-button [matMenuTriggerFor]="theme" matTooltip="Temas"><mat-icon>format_color_fill</mat-icon></button>
+        <mat-menu #theme="matMenu" xPosition="before" yPosition="below">
+          <button mat-menu-item *ngFor="let theme of themeList" (click)="selectTheme(theme.value)">{{theme.label}}</button>
+        </mat-menu>
+
         <button mat-icon-button matTooltip="Menu" [matMenuTriggerFor]="menu">
           <mat-icon>menu</mat-icon>
         </button>

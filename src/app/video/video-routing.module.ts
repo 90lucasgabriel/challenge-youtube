@@ -6,10 +6,11 @@ import { VideoSearchComponent }       from './video-search/video-search.componen
 import { VideoListComponent }         from './video-list/video-list.component';
 
 const videoRoutes: Routes = [
+  { path: '',                component: VideoFeaturedComponent, pathMatch: 'full' },
   { path: 'video',           component: VideoFeaturedComponent, pathMatch: 'full' },
   { path: 'video/list',      component: VideoListComponent,     pathMatch: 'full' },
   { path: 'video/search',    component: VideoSearchComponent,   pathMatch: 'full' },
-  
+
 ];
 
 @NgModule({

@@ -1,0 +1,24 @@
+<!-- VIDEO START -->
+<div>
+  <iframe [src]="video?.id | youtubeSafeUrl" frameborder="0" allowfullscreen style="min-height: 300px; width:100%"></iframe>
+</div> 
+<!-- VIDEO END -->
+
+<!-- DESCRIPTION START -->
+<div >
+  <div fxLayoutAlign="space-between">
+    <div class="mat-h2">{{video?.snippet.localized.title}}</div>
+    <div fxLayoutGap="15px">
+      <mat-icon matTooltip="{{video?.statistics.viewCount}} views">remove_red_eye</mat-icon>
+      <mat-icon [matTooltip]="video?.snippet.publishedAt">access_time</mat-icon>
+    </div>
+  </div>                    
+
+  <div fxLayout="column" fxLayoutGap="25px">
+    <mat-divider></mat-divider>
+    <div style="max-height: 120px; overflow-y: auto">
+      {{video?.snippet.localized.description}}
+    </div>
+  </div>
+</div> 
+<!-- DESCRIPTION END -->   

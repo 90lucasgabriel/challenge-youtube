@@ -1,44 +1,47 @@
 <!-- LAYOUT START -->
-<div fxLayout="row" fxLayoutAlign="center start" class="mat-typography" ngStyle.gt-md="margin-top: 25px">
+<div fxLayout="row" fxLayoutAlign="center start" class="mat-typography" ngStyle.gt-md="margin-top: 25px"   ngStyle.lt-lg="margin-top: 250px">
     <div fxLayout="column" fxFlex="80" fxFlex.lt-md="100" fxLayoutGap="25px">
       <!-- MAIN START -->        
-      <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="25px" class="padding">
+      <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="25px">
         
               
-      <div fxLayout="column" fxLayoutGap="25px" class="padding">
+      <div fxLayout="column" fxFlex="100" fxLayoutGap="25px">
                 
         <!-- LEFT COLUMN START -->
         <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutGap="25px">
           
-          <div fxFlex.gt-md="65">  
-            <div fxLayout="column" fxLayoutGap="25px">
+          <div fxFlex.gt-md="65">
+            <div fxLayout="column" fxLayoutGap="25px" class="padding">
               
               <h2>Vídeo em Destaque</h2>
+              <mat-progress-spinner color="primary" mode="indeterminate" diameter="30" *ngIf="loadingFeatured" ></mat-progress-spinner>
 
-              <!-- VIDEO START -->
-              <div>
-                <iframe [src]="featuredVideo?.id | youtubeSafeUrl" frameborder="0" allowfullscreen style="min-height: 300px; width:100%"></iframe>
-              </div> 
-              <!-- VIDEO END -->
+              <div *ngIf="!loadingFeatured">
+                <!-- VIDEO START -->
+                <div>
+                  <iframe [src]="featuredVideo?.id | youtubeSafeUrl" frameborder="0" allowfullscreen ngStyle.gt-md="height: 500px; width:100%" ngStyle.lt-lg="height: 300px; width: 100%; position: fixed; top: 56px; left: 0; z-index: 10"></iframe>
+                </div> 
+                <!-- VIDEO END -->
 
-              <!-- DESCRIPTION START -->
-              <div>
-                <div fxLayoutAlign="space-between">
-                  <div class="mat-h2">{{featuredVideo?.snippet.localized.title}}</div>
-                  <div fxLayoutGap="15px">
-                    <mat-icon matTooltip="{{featuredVideo?.statistics.viewCount}} views">remove_red_eye</mat-icon>
-                    <mat-icon [matTooltip]="featuredVideo?.snippet.publishedAt">access_time</mat-icon>
+                <!-- DESCRIPTION START -->
+                <div>
+                  <div fxLayoutAlign="space-between">
+                    <div class="mat-h2">{{featuredVideo?.snippet.localized.title}}</div>
+                    <div fxLayoutGap="15px">
+                      <mat-icon matTooltip="{{featuredVideo?.statistics.viewCount}} views">remove_red_eye</mat-icon>
+                      <mat-icon [matTooltip]="featuredVideo?.snippet.publishedAt">access_time</mat-icon>
+                    </div>
+                  </div>                    
+
+                  <div fxLayout="column" fxLayoutGap="25px">
+                    <mat-divider></mat-divider>
+                    <div>
+                      {{featuredVideo?.snippet.localized.description}}
+                    </div>
                   </div>
-                </div>                    
-
-                <div fxLayout="column" fxLayoutGap="25px">
-                  <mat-divider></mat-divider>
-                  <div>
-                    {{featuredVideo?.snippet.localized.description}}
-                  </div>
-                </div>
-              </div> 
-              <!-- DESCRIPTION END -->              
+                </div> 
+                <!-- DESCRIPTION END -->              
+              </div>
 
             </div>
           </div>
@@ -48,29 +51,32 @@
           <!-- RIGHT COLUMN START -->
           <div fxLayout="column" fxLayoutGap="25px" fxFlex.gt-md="35"> 
             
-            <h2>+ Vídeos</h2>
+            <h2 fxHide.lt-md="true">+ Vídeos</h2>
 
             <!-- + VIDEOS START -->
-            <mat-card  ngStyle.gt-sm="max-height: 650px; overflow: auto;">
+            <mat-card  ngClass.gt-md="right-videos">
               <mat-card-content>
-                <div fxLayout="column" fxLayoutGap="25px">
-                  <div fxLayout="row" *ngFor="let video of videoList"  fxLayoutGap="10px">
-                    <div fxFlex="50">
-                      <img [src]="video.snippet.thumbnails.default.url" class="full-width" />
-                    </div>
-                    <div fxFlex="50" fxLayoutGap="5px">
-                      <div fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="5px">
-                        <div ngClass.lt-md="p-h2" ngClass.gt-sm="p-h3">{{video.snippet.title | slice:0:45}}</div>
-                        <div fxLayoutAlign="start center">
-                          <mat-icon>remove_red_eye</mat-icon> 
-                          {{featuredVideo?.statistics.viewCount}} views
-                        </div>
+                <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="25px">
+                  <div fxLayout="row" *ngFor="let video of videoList"  fxLayoutGap="10px" (click)="selectFeatured(video)">
+                    
+                      <!-- COMPONENT VIDEOS -->
+                      <div fxFlex="50">
+                        <img [src]="video.snippet.thumbnails.medium.url" class="full-width" />
                       </div>
-                      
-                    </div>                    
+                      <div fxFlex="50" fxLayoutGap="5px">
+                        <div fxLayout="column" fxLayoutAlign="space-between" fxLayoutGap="5px">
+                          <div ngClass.lt-md="p-h2" ngClass.gt-sm="p-h3">{{video.snippet.title | slice:0:45}}</div>
+                          <div fxLayoutAlign="start center">
+                            <mat-icon>remove_red_eye</mat-icon> 
+                            {{video.statistics.viewCount}} views
+                          </div>
+                        </div>                      
+                      </div> 
+                    
                   </div>
 
-                  <button mat-stroked-button color="primary">Carregar mais...</button>
+                  <mat-progress-spinner color="primary" mode="indeterminate" diameter="30" *ngIf="loadingMore" ></mat-progress-spinner>
+                  <button mat-stroked-button color="primary" (click)="loadMore()" class="full-width" *ngIf="!loadingMore"  >Carregar mais...</button>
 
                 </div>
               </mat-card-content>

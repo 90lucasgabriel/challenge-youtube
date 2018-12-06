@@ -5,19 +5,20 @@
   import { HttpClient }                 from '@angular/common/http';
 
   import { AppConfig }                  from '../app.config';
+  import { SearchParam }                from '../common/models/search-param.model';
+  import { VideoParam }                 from '../common/models/video-param.model.';
+  import { UtilService }                from '../common/services/util.service';
+
   import { Video }                      from './video.model';
+
+
 
 
 @Injectable()
 export class VideoService {
 // DECLARATIONS --------------------------------------------------
-  private youtubeApiKey:                string = AppConfig.YOUTUBE_API_KEY;
-  private channelId:                    string = 'UCKHhA5hN2UohhFDfNXB_cvQ';
-  private maxResults:                   number = 10;
-  private entity:                       string = 'videos';
-  private videoList:                    Observable<Video[]>;
-  private searchUrl:                    string = `https://www.googleapis.com/youtube/v3/search?key=${this.youtubeApiKey}&channelId=${this.channelId}&order=date&maxResults=${this.maxResults}&part=snippet`;
-  private videoUrl:                     string = `https://www.googleapis.com/youtube/v3/videos?key=${this.youtubeApiKey}&part=id,snippet,contentDetails,statistics&id=`;
+  private searchUrl:                    string = `https://www.googleapis.com/youtube/v3/search?`;
+  private videoUrl:                     string = `https://www.googleapis.com/youtube/v3/videos?`;
 
 
 
@@ -26,29 +27,49 @@ export class VideoService {
   /**
    * GET Search List
    */
-  public query(): Observable<any> {
-    return this.http.get(this.searchUrl);
+  public query(searchParam: SearchParam): Observable<any> {
+    const searchQueryString = this.util.ObjectToQuerystring(searchParam);
+    return this.http.get(`${this.searchUrl}&${searchQueryString}`);
   }
 
   /**
    * GET Videos List with videos Ids
    */
-  public queryDetails(): Observable<any> {
+  public queryDetails(searchParam: SearchParam, videoParam: VideoParam): Observable<any> {
     let videosId;
-    return this.query().pipe(
-      map(v => {
-        videosId = v.items.map(item => item.id.videoId);
-        console.log(videosId);
-        return this.http.get(`${this.videoUrl}${videosId.join()}`);
+
+    // Return search list
+    return this.query(searchParam).pipe(
+      map(search => {
+
+        videosId      = search.items.map(item => item.id.videoId);            // Create a videos id array
+        videoParam.id = videosId.join();                                      // Set id list to object videoParam
+        const videoQueryString = this.util.ObjectToQuerystring(videoParam);   // Convert videoParam into queryString
+
+        // Return a video list by ids
+        return this.http.get(`${this.videoUrl}${videoQueryString}`).pipe(
+          map(videos => {
+
+            // Merge results of search and videoList
+            return {search, ...videos};
+          })
+        );
       })
     );
   }
 
-
+  /**
+   * GET Search List
+   */
+  public loadMore(searchParam: SearchParam, videoParam: VideoParam): Observable<any> {
+    return this.query(searchParam);
+  }
 
 
 
 // OTHERS ---------------------------------------------------------
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private util: UtilService) { }
 
 }

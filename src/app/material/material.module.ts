@@ -1,5 +1,8 @@
 import { NgModule }           from '@angular/core';
 import { CommonModule }       from '@angular/common';
+import { DialogContentComponent }   from './dialog/dialog-content.component';
+import { PipesModule }              from '../common/pipes/pipes.module';
+  
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -55,7 +58,8 @@ import { FlexLayoutModule }           from '@angular/flex-layout';
     MatTableModule,
     MatToolbarModule,
     MatTooltipModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    PipesModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -84,7 +88,7 @@ import { FlexLayoutModule }           from '@angular/flex-layout';
     MatTooltipModule,
     FlexLayoutModule
   ],
-  declarations: [],
-  entryComponents: []
+  declarations: [ DialogContentComponent ],
+  entryComponents: [ DialogContentComponent ]
 })
 export class MaterialModule { }
