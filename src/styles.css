@@ -33,3 +33,12 @@ p {
   min-width:      100%;
   max-width:      100%;
 }
+
+
+.mat-drawer-inner-container {  
+  overflow:         hidden !important;
+}
+
+.mat-drawer-inner-container:hover {  
+  overflow-y:         auto !important;
+}
