@@ -1,6 +1,6 @@
 
 # Challenge - YouTube
-This is an [Angular 7](http://angular.io/) + [Angular Material](https://material.angular.io/) application. 
+This is an [Angular 7](http://angular.io/) + [Angular Material](https://material.angular.io/) + [YouTube API](https://developers.google.com/youtube/v3/) application. 
 
 
 ## Video Preview
