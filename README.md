@@ -17,11 +17,11 @@ npm install -g @angular/cli
 ## Installing
 - Clone this repo:
 ```
-git clone git@github.com:90lucasgabriel/desafio.git
+git clone git@github.com:90lucasgabriel/challenge-youtube.git
 ```
 - Access directory:
 ```
-cd desafio
+cd challenge-youtube
 ```
 - Install dependencies:
 ```
